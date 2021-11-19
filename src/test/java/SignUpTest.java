@@ -68,5 +68,46 @@ public class SignUpTest {
 
     }
 
+    @Test
+    public void passwordAndConfirmPasswordShouldBeEquals() {
+        //открытие страницы https://www.sharelane.com/cgi-bin/register.py
+        System.setProperty("webdriver.chrome.driver","src/test/resources/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py");
+        //ввести 5 цифр
+
+        WebElement zipCodeInput = driver.findElement(By.name("zip_code"));
+        zipCodeInput.sendKeys("12345");
+
+        //нажимаем кнопку Continue
+        WebElement continueButton = driver.findElement(By.cssSelector("[value = Continue]"));
+        continueButton.click();
+        //должны убедиться, что мы на странице sing up
+        boolean isDisplayed = driver.findElement(By.cssSelector("[value = Register]")).isDisplayed();
+        Assert.assertEquals(isDisplayed, true);
+
+        //insert vlid data
+        WebElement firstNameInput = driver.findElement(By.name("first_name"));
+        firstNameInput.sendKeys("test");
+        WebElement lastNameInput = driver.findElement(By.name("last_name"));
+        lastNameInput.sendKeys("test");
+        WebElement emailInput = driver.findElement(By.name("email"));
+        emailInput.sendKeys("test@email.by");
+
+        //insert password into inputs
+        WebElement password1Input = driver.findElement(By.name("password1"));
+        password1Input.sendKeys("12345");
+        WebElement password2Input = driver.findElement(By.name("password2"));
+        password2Input.sendKeys("12345");
+
+        driver.findElement(By.cssSelector("[value = Register]")).click();
+
+        boolean isConfirmationDisplayed = driver.findElement(By.xpath("//span[@class=\"confirmation_message\" and text()=\"Account is created!\"]")).isDisplayed();
+        Assert.assertEquals(isConfirmationDisplayed, true);
+
+        //закрыть браузер
+        driver.quit();
+    }
+
 
 }
